@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
-    private int waktu_loading = 3000;
+    private int waktu_loading = 2500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +20,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(mainIntent);
+                overridePendingTransition(0, R.anim.fade_out);
                 finish();
             }
         }, waktu_loading);
