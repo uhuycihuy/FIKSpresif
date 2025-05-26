@@ -37,8 +37,19 @@
         android:drawablePadding="24dp"/>
 
     <EditText
-        android:id="@+id/etRegisterPassword"
+        android:id="@+id/etRegisterEmail"
         android:layout_below="@+id/etRegisterName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:hint="Email Address"
+        android:inputType="textEmailAddress"
+        android:drawableStart="@drawable/baseline_email_24"
+        android:drawablePadding="24dp"/>
+
+    <EditText
+        android:id="@+id/etRegisterPassword"
+        android:layout_below="@+id/etRegisterEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
