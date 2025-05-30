@@ -1,21 +1,23 @@
 package com.example.fikspresif;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.android.volley.VolleyError;
+
+import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText etUsername, etPassword;
@@ -60,20 +62,31 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void handleLoginResponse(String response) {
-        if (response.contains("Selamat Datang")) {
-            showToast("Login berhasil");
-            startMainActivity();
-        }
-        else if (response.contains("Akun tidak ditemukan")) {
-            showToast("Akun tidak ditemukan, silakan register");
-        }
-        else if (response.contains("Username atau Password salah")) {
-            showToast("Username atau password salah");
-        }
-        else {
-            // Generic error message for any other response
+        try {
+            JSONObject jsonResponse = new JSONObject(response);
+
+            if (jsonResponse.has("message") && jsonResponse.getString("message").equals("Selamat Datang")) {
+                int userId = jsonResponse.getInt("user_id");
+                String username = jsonResponse.getString("username");
+
+                SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("username", username);
+                editor.putInt("user_id", userId);
+                editor.apply();
+
+                showToast("Login berhasil");
+                startMainActivity();
+            } else if (jsonResponse.has("error")) {
+                String errorMsg = jsonResponse.getString("error");
+                showToast(errorMsg);
+            } else {
+                showToast("Login gagal. Silakan coba lagi");
+                Log.e("LOGIN_ERROR", "Unexpected response: " + response);
+            }
+        } catch (Exception e) {
             showToast("Login gagal. Silakan coba lagi");
-            Log.e("LOGIN_ERROR", "Unexpected response: " + response);
+            Log.e("LOGIN_ERROR", "JSON parsing error: " + e.getMessage());
         }
     }
 

@@ -1,0 +1,23 @@
+[33mcommit 6defea90a85ba2a4b7aeef496c8dc7347179f589[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m
+Author: jennyaaz <jennyaulia780@gmail.com>
+Date:   Mon May 26 13:46:39 2025 +0700
+
+    login, register dummy dan navigasi menu
+
+[33mcommit edd623c6e73a3df532977454af845cace424dd55[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: uhuycihuy <ridhobujank69@gmail.com>
+Date:   Mon May 26 12:08:20 2025 +0700
+
+    nambah email di regis
+
+[33mcommit b8d39c7082f8f8d94169108a63f25382bc00bff9[m
+Author: uhuycihuy <ridhobujank69@gmail.com>
+Date:   Mon May 26 10:49:16 2025 +0700
+
+    login dan register xml
+
+[33mcommit 7def4d0405d4fc39729cd519c96de00f7e82d0f0[m
+Author: uhuycihuy <ridhobujank69@gmail.com>
+Date:   Sun May 25 19:09:10 2025 +0700
+
+    Baru activity splash screen
