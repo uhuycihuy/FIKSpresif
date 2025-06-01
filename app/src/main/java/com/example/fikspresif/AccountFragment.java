@@ -9,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import org.json.JSONObject;
@@ -22,7 +24,7 @@ import java.util.Scanner;
 
 public class AccountFragment extends Fragment {
     private TextView tvUsername, tvName, tvEmail;
-    private Button btnLogout;
+    private Button btnLogout, btnEditAkun;
     private OnAccountLogoutListener logoutListener;
 
     public interface OnAccountLogoutListener {
@@ -48,25 +50,51 @@ public class AccountFragment extends Fragment {
         tvName = view.findViewById(R.id.tvAccountName);
         tvEmail = view.findViewById(R.id.tvAccountEmail);
         btnLogout = view.findViewById(R.id.btnLogout);
+        btnEditAkun = view.findViewById(R.id.btnEditUser);
 
         int userId = getUserIdFromPrefs();
         if (userId != 0) {
             new FetchAccountTask(userId).execute();
         }
 
-        btnLogout.setOnClickListener(v -> {
-            SharedPreferences prefs = requireActivity()
-                    .getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.clear();
-            editor.apply();
-
-            if (logoutListener != null) {
-                logoutListener.onLogout();
-            }
-        });
+        btnLogout.setOnClickListener(v -> showLogoutConfirmationDialog());
+        btnEditAkun.setOnClickListener(v -> goToEditUser());
 
         return view;
+    }
+
+    private void goToEditUser() {
+        EditUserFragment editUserFragment = new EditUserFragment();
+        requireActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, editUserFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    // Method to show logout confirmation dialog
+    private void showLogoutConfirmationDialog() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Konfirmasi Logout")
+                .setMessage("Apakah Anda yakin ingin logout?")
+                .setPositiveButton("Ya", (dialog, which) -> performLogout())
+                .setNegativeButton("Tidak", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
+    // Method to handle actual logout process
+    private void performLogout() {
+        // Clear SharedPreferences (session data)
+        SharedPreferences prefs = requireActivity()
+                .getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        prefs.edit().clear().apply();
+
+        // Show success toast
+        Toast.makeText(requireContext(), "Anda berhasil logout", Toast.LENGTH_SHORT).show();
+
+        // Trigger logout callback
+        if (logoutListener != null) {
+            logoutListener.onLogout();
+        }
     }
 
     private int getUserIdFromPrefs() {
