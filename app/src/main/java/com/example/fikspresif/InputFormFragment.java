@@ -1,6 +1,7 @@
 package com.example.fikspresif;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,11 +33,9 @@ public class InputFormFragment extends Fragment {
     private Button btnSubmit;
     private ProgressDialog progressDialog;
 
-    // Use from Db_Contract
     private final String URL_ADD_ASPIRASI = Db_Contract.urlAddAspirasi;
 
     public InputFormFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -58,11 +57,22 @@ public class InputFormFragment extends Fragment {
         return view;
     }
 
+    private int getUserIdFromPrefs() {
+        return requireActivity()
+                .getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                .getInt("user_id", 0);
+    }
+
     private void submitAspirasi() {
         String title = etTitle.getText().toString().trim();
         String content = etContent.getText().toString().trim();
         int isAnonymous = cbAnonymous.isChecked() ? 1 : 0;
-        int userId = 1; // TODO: Replace with session user ID if available
+        int userId = getUserIdFromPrefs();
+
+        if (userId == 0) {
+            Toast.makeText(getContext(), "User belum login", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (title.isEmpty() || content.isEmpty()) {
             Toast.makeText(getContext(), "Judul dan isi tidak boleh kosong", Toast.LENGTH_SHORT).show();

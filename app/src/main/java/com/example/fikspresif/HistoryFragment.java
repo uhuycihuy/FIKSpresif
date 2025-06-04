@@ -1,5 +1,6 @@
 package com.example.fikspresif;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,7 +32,6 @@ public class HistoryFragment extends Fragment {
     private final String URL_GET_ASPIRASI = Db_Contract.urlGetAspirasiById;
 
     public HistoryFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -43,7 +43,7 @@ public class HistoryFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         aspirasiList = new ArrayList<>();
-        adapter = new AspirasiAdapter(aspirasiList);
+        adapter = new AspirasiAdapter(aspirasiList, false);
         recyclerView.setAdapter(adapter);
 
         loadAspirasi();
@@ -52,7 +52,14 @@ public class HistoryFragment extends Fragment {
     }
 
     private void loadAspirasi() {
-        int userId = 1; // Ganti dengan session user ID
+        SharedPreferences prefs = requireContext().getSharedPreferences("user_prefs", getContext().MODE_PRIVATE);
+        int userId = prefs.getInt("user_id", 0);
+
+        if (userId == 0) {
+            Toast.makeText(getContext(), "Silakan login terlebih dahulu", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String url = URL_GET_ASPIRASI + "?user_id=" + userId;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -67,8 +74,10 @@ public class HistoryFragment extends Fragment {
                                 String title = obj.optString("title", "Judul tidak ada");
                                 String content = obj.optString("content", "Isi tidak tersedia");
                                 String createdAt = obj.optString("created_at", "-");
+                                String username = obj.optString("username", "Anonim");
+                                boolean isAnonymous = obj.optBoolean("is_anonymous", false);
 
-                                aspirasiList.add(new Aspirasi(title, content, createdAt));
+                                aspirasiList.add(new Aspirasi(title, content, createdAt, username, isAnonymous));
                             }
 
                             adapter.notifyDataSetChanged();

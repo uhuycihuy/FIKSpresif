@@ -71,7 +71,6 @@ public class AccountFragment extends Fragment {
                 .commit();
     }
 
-    // Method to show logout confirmation dialog
     private void showLogoutConfirmationDialog() {
         new AlertDialog.Builder(requireContext())
                 .setTitle("Konfirmasi Logout")

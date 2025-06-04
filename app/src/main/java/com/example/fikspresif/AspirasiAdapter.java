@@ -13,9 +13,11 @@ import java.util.ArrayList;
 public class AspirasiAdapter extends RecyclerView.Adapter<AspirasiAdapter.ViewHolder> {
 
     private final ArrayList<Aspirasi> aspirasiList;
+    private final boolean isPublicView;
 
-    public AspirasiAdapter(ArrayList<Aspirasi> aspirasiList) {
+    public AspirasiAdapter(ArrayList<Aspirasi> aspirasiList, boolean isPublicView) {
         this.aspirasiList = aspirasiList;
+        this.isPublicView = isPublicView;
     }
 
     @NonNull
@@ -32,6 +34,13 @@ public class AspirasiAdapter extends RecyclerView.Adapter<AspirasiAdapter.ViewHo
         holder.tvTitle.setText(aspirasi.getTitle());
         holder.tvContent.setText(aspirasi.getContent());
         holder.tvDate.setText(aspirasi.getCreatedAt());
+
+        if (isPublicView) {
+            holder.tvUser.setVisibility(View.VISIBLE);
+            holder.tvUser.setText(aspirasi.getUsername());
+        } else {
+            holder.tvUser.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -40,13 +49,14 @@ public class AspirasiAdapter extends RecyclerView.Adapter<AspirasiAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvContent, tvDate;
+        TextView tvTitle, tvContent, tvDate, tvUser;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvJudul);
             tvContent = itemView.findViewById(R.id.tvIsi);
             tvDate = itemView.findViewById(R.id.tvTanggal);
+            tvUser = itemView.findViewById(R.id.tvUser);
         }
     }
 }
