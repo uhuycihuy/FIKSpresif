@@ -40,7 +40,7 @@ public class MainFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         aspirasiList = new ArrayList<>();
-        adapter = new AspirasiAdapter(aspirasiList, true);
+        adapter = new AspirasiAdapter(aspirasiList, true, false); // public view, no edit/delete
         recyclerView.setAdapter(adapter);
 
         Button btnTerbaru = view.findViewById(R.id.btnTerbaru);

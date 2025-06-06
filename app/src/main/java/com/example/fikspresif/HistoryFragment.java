@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,8 +32,7 @@ public class HistoryFragment extends Fragment {
 
     private final String URL_GET_ASPIRASI = Db_Contract.urlGetAspirasiById;
 
-    public HistoryFragment() {
-    }
+    public HistoryFragment() {}
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -43,7 +43,36 @@ public class HistoryFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         aspirasiList = new ArrayList<>();
-        adapter = new AspirasiAdapter(aspirasiList, false);
+
+        // isPublicView = false, isEditable = true supaya tombol Edit & Delete muncul
+        adapter = new AspirasiAdapter(aspirasiList, false, true);
+
+        adapter.setOnItemClickListener(new AspirasiAdapter.OnItemClickListener() {
+            @Override
+            public void onEditClick(int position) {
+                Aspirasi aspirasi = aspirasiList.get(position);
+                // TODO: Implement edit aspirasi (bisa buka dialog/edit activity)
+                Toast.makeText(getContext(), "Edit: " + aspirasi.getTitle(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onDeleteClick(int position) {
+                Aspirasi aspirasi = aspirasiList.get(position);
+
+                new AlertDialog.Builder(requireContext())
+                        .setTitle("Hapus Aspirasi")
+                        .setMessage("Yakin ingin menghapus aspirasi ini?")
+                        .setPositiveButton("Hapus", (dialog, which) -> {
+                            // TODO: Panggil API hapus aspirasi dulu jika perlu
+                            aspirasiList.remove(position);
+                            adapter.notifyItemRemoved(position);
+                            Toast.makeText(getContext(), "Aspirasi dihapus", Toast.LENGTH_SHORT).show();
+                        })
+                        .setNegativeButton("Batal", null)
+                        .show();
+            }
+        });
+
         recyclerView.setAdapter(adapter);
 
         loadAspirasi();
