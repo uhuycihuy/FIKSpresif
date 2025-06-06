@@ -1,13 +1,11 @@
 package com.example.fikspresif;
 
-import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
@@ -21,8 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import android.widget.EditText;
-import android.widget.TextView;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,47 +83,61 @@ public class HistoryFragment extends Fragment {
     }
 
     private void showEditDialog(Aspirasi aspirasi, int position) {
-        Dialog dialog = new Dialog(requireContext());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_edit_aspirasi);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        View dialogView = inflater.inflate(R.layout.dialog_edit_aspirasi, null);
 
-        EditText etJudulEdit = dialog.findViewById(R.id.etJudulEdit);
-        EditText etIsiEdit = dialog.findViewById(R.id.etIsiEdit);
-        CheckBox cbAnonimusEdit = dialog.findViewById(R.id.cbAnonimusEdit);
-        TextView btnBatalEdit = dialog.findViewById(R.id.btnBatalEdit);
-        TextView btnSimpanEdit = dialog.findViewById(R.id.btnSimpanEdit);
+        // Inisialisasi komponen
+        TextInputEditText etJudulEdit = dialogView.findViewById(R.id.etJudulEdit);
+        TextInputEditText etIsiEdit = dialogView.findViewById(R.id.etIsiEdit);
+        CheckBox cbAnonimusEdit = dialogView.findViewById(R.id.cbAnonimusEdit);
 
+        // Set data existing
         etJudulEdit.setText(aspirasi.getTitle());
         etIsiEdit.setText(aspirasi.getContent());
         cbAnonimusEdit.setChecked(aspirasi.isAnonymous());
 
-        btnBatalEdit.setOnClickListener(v -> dialog.dismiss());
+        // Buat AlertDialog dengan title dan button yang diatur di Java
+        AlertDialog dialog = new AlertDialog.Builder(requireContext())
+                .setTitle("Edit Aspirasi")
+                .setView(dialogView)
+                .setPositiveButton("Update", null) // Set null dulu, akan di-override nanti
+                .setNegativeButton("Batal", (d, which) -> d.dismiss())
+                .create();
 
-        btnSimpanEdit.setOnClickListener(v -> {
+        dialog.show();
+
+        // Override positive button untuk validasi custom
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             String judul = etJudulEdit.getText().toString().trim();
             String isi = etIsiEdit.getText().toString().trim();
             boolean isAnonim = cbAnonimusEdit.isChecked();
 
-            if (judul.isEmpty()) {
-                etJudulEdit.setError("Judul tidak boleh kosong");
-                etJudulEdit.requestFocus();
-                return;
+            // Validasi input
+            if (validateEditInput(judul, isi, etJudulEdit, etIsiEdit)) {
+                editAspirasi(aspirasi.getAspirationId(), judul, isi, isAnonim, position, dialog);
             }
-
-            if (isi.isEmpty()) {
-                etIsiEdit.setError("Isi aspirasi tidak boleh kosong");
-                etIsiEdit.requestFocus();
-                return;
-            }
-
-            editAspirasi(aspirasi.getAspirationId(), judul, isi, isAnonim, position, dialog);
         });
-
-        dialog.show();
     }
 
-    private void editAspirasi(int aspirationId, String title, String content, boolean isAnonymous, int position, Dialog dialog) {
+    private boolean validateEditInput(String judul, String isi,
+                                      TextInputEditText etJudul,
+                                      TextInputEditText etIsi) {
+        if (judul.isEmpty()) {
+            etJudul.setError("Judul tidak boleh kosong");
+            etJudul.requestFocus();
+            return false;
+        }
+
+        if (isi.isEmpty()) {
+            etIsi.setError("Isi aspirasi tidak boleh kosong");
+            etIsi.requestFocus();
+            return false;
+        }
+
+        return true;
+    }
+
+    private void editAspirasi(int aspirationId, String title, String content, boolean isAnonymous, int position, AlertDialog dialog) {
         SharedPreferences prefs = requireContext().getSharedPreferences("user_prefs", getContext().MODE_PRIVATE);
         int userId = prefs.getInt("user_id", 0);
 
