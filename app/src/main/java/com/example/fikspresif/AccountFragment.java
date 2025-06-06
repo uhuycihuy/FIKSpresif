@@ -71,33 +71,28 @@ public class AccountFragment extends Fragment {
     }
 
     private void showEditProfileDialog() {
-        // Inflate layout dialog
         LayoutInflater inflater = LayoutInflater.from(requireContext());
         View dialogView = inflater.inflate(R.layout.dialog_edit_profile, null);
 
-        // Initialize dialog views
         TextInputEditText etUsername = dialogView.findViewById(R.id.etUsername);
         TextInputEditText etFullName = dialogView.findViewById(R.id.etFullName);
         TextInputEditText etEmail = dialogView.findViewById(R.id.etEmail);
         TextInputEditText etPasswordLama = dialogView.findViewById(R.id.etPasswordLama);
         TextInputEditText etPasswordBaru = dialogView.findViewById(R.id.etPasswordBaru);
 
-        // Populate current data
         etUsername.setText(tvUsername.getText().toString());
         etFullName.setText(tvName.getText().toString());
         etEmail.setText(tvEmail.getText().toString());
 
-        // Create dialog
         AlertDialog dialog = new AlertDialog.Builder(requireContext())
-                .setTitle("Edit Profil")
+                .setTitle("Edit Profile")
                 .setView(dialogView)
-                .setPositiveButton("Update", null) // Set null untuk custom handling
+                .setPositiveButton("Update", null)
                 .setNegativeButton("Batal", (d, which) -> d.dismiss())
                 .create();
 
         dialog.show();
 
-        // Custom handling untuk tombol Update
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             String username = etUsername.getText().toString().trim();
             String fullName = etFullName.getText().toString().trim();
@@ -263,7 +258,6 @@ public class AccountFragment extends Fragment {
             if (result.contains("Berhasil")) {
                 Toast.makeText(requireContext(), "Profil berhasil diperbarui", Toast.LENGTH_SHORT).show();
 
-                // Update SharedPreferences
                 SharedPreferences prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putString("username", username);
@@ -271,12 +265,10 @@ public class AccountFragment extends Fragment {
                 editor.putString("email", email);
                 editor.apply();
 
-                // Update UI
                 tvUsername.setText(username);
                 tvName.setText(fullName);
                 tvEmail.setText(email);
 
-                // Close dialog
                 dialog.dismiss();
             } else {
                 Toast.makeText(requireContext(), result, Toast.LENGTH_LONG).show();

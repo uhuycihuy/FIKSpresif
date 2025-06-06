@@ -1,11 +1,14 @@
 package com.example.fikspresif;
 
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +21,8 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +40,7 @@ public class HistoryFragment extends Fragment {
 
     private final String URL_GET_ASPIRASI = Db_Contract.urlGetAspirasiById;
     private final String URL_DELETE_ASPIRASI = Db_Contract.urlDeleteAspirasi;
+    private final String URL_EDIT_ASPIRASI = Db_Contract.urlEditAspirasi;
 
     public HistoryFragment() {}
 
@@ -54,8 +60,7 @@ public class HistoryFragment extends Fragment {
             @Override
             public void onEditClick(int position) {
                 Aspirasi aspirasi = aspirasiList.get(position);
-                // TODO: Implement edit aspirasi (bisa buka dialog/edit activity)
-                Toast.makeText(getContext(), "Edit: " + aspirasi.getTitle(), Toast.LENGTH_SHORT).show();
+                showEditDialog(aspirasi, position);
             }
 
             @Override
@@ -78,6 +83,104 @@ public class HistoryFragment extends Fragment {
         loadAspirasi();
 
         return view;
+    }
+
+    private void showEditDialog(Aspirasi aspirasi, int position) {
+        Dialog dialog = new Dialog(requireContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_edit_aspirasi);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        EditText etJudulEdit = dialog.findViewById(R.id.etJudulEdit);
+        EditText etIsiEdit = dialog.findViewById(R.id.etIsiEdit);
+        CheckBox cbAnonimusEdit = dialog.findViewById(R.id.cbAnonimusEdit);
+        TextView btnBatalEdit = dialog.findViewById(R.id.btnBatalEdit);
+        TextView btnSimpanEdit = dialog.findViewById(R.id.btnSimpanEdit);
+
+        etJudulEdit.setText(aspirasi.getTitle());
+        etIsiEdit.setText(aspirasi.getContent());
+        cbAnonimusEdit.setChecked(aspirasi.isAnonymous());
+
+        btnBatalEdit.setOnClickListener(v -> dialog.dismiss());
+
+        btnSimpanEdit.setOnClickListener(v -> {
+            String judul = etJudulEdit.getText().toString().trim();
+            String isi = etIsiEdit.getText().toString().trim();
+            boolean isAnonim = cbAnonimusEdit.isChecked();
+
+            if (judul.isEmpty()) {
+                etJudulEdit.setError("Judul tidak boleh kosong");
+                etJudulEdit.requestFocus();
+                return;
+            }
+
+            if (isi.isEmpty()) {
+                etIsiEdit.setError("Isi aspirasi tidak boleh kosong");
+                etIsiEdit.requestFocus();
+                return;
+            }
+
+            editAspirasi(aspirasi.getAspirationId(), judul, isi, isAnonim, position, dialog);
+        });
+
+        dialog.show();
+    }
+
+    private void editAspirasi(int aspirationId, String title, String content, boolean isAnonymous, int position, Dialog dialog) {
+        SharedPreferences prefs = requireContext().getSharedPreferences("user_prefs", getContext().MODE_PRIVATE);
+        int userId = prefs.getInt("user_id", 0);
+
+        if (userId == 0) {
+            Toast.makeText(getContext(), "Silakan login terlebih dahulu", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        StringRequest editRequest = new StringRequest(Request.Method.POST, URL_EDIT_ASPIRASI,
+                response -> {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String status = jsonObject.optString("status");
+                        String message = jsonObject.optString("message");
+
+                        if ("success".equalsIgnoreCase(status)) {
+                            Aspirasi aspirasi = aspirasiList.get(position);
+                            Aspirasi updatedAspirasi = new Aspirasi(
+                                    aspirasi.getAspirationId(),
+                                    title,
+                                    content,
+                                    aspirasi.getCreatedAt(),
+                                    aspirasi.getUsername(),
+                                    isAnonymous
+                            );
+
+                            aspirasiList.set(position, updatedAspirasi);
+                            adapter.notifyItemChanged(position);
+
+                            dialog.dismiss();
+                            Toast.makeText(getContext(), "Aspirasi berhasil diperbarui", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Gagal memperbarui aspirasi: " + message, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        Toast.makeText(getContext(), "Response error", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                error -> {
+                    Toast.makeText(getContext(), "Error koneksi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("aspiration_id", String.valueOf(aspirationId));
+                params.put("user_id", String.valueOf(userId));
+                params.put("title", title);
+                params.put("content", content);
+                params.put("is_anonymous", isAnonymous ? "1" : "0");
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(requireContext()).add(editRequest);
     }
 
     private void loadAspirasi() {
