@@ -73,7 +73,7 @@ public class MainFragment extends Fragment {
 
                             for (int i = 0; i < dataArray.length(); i++) {
                                 JSONObject obj = dataArray.getJSONObject(i);
-
+                                int aspirationId = obj.optInt("aspiration_id", 0);
                                 String title = obj.optString("title", "Judul tidak ada");
                                 String content = obj.optString("content", "Isi tidak tersedia");
                                 String createdAt = obj.optString("created_at", "-");
@@ -82,7 +82,7 @@ public class MainFragment extends Fragment {
                                 String username = obj.optString("username", "Tidak diketahui");
                                 String displayUsername = isAnonymous ? "Anonim" : username;
 
-                                aspirasiList.add(new Aspirasi(title, content, createdAt, displayUsername, isAnonymous));
+                                aspirasiList.add(new Aspirasi(aspirationId, title, content, createdAt, displayUsername, isAnonymous));
                             }
 
                             adapter.notifyDataSetChanged();

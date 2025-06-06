@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -23,6 +24,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HistoryFragment extends Fragment {
 
@@ -31,6 +34,7 @@ public class HistoryFragment extends Fragment {
     private ArrayList<Aspirasi> aspirasiList;
 
     private final String URL_GET_ASPIRASI = Db_Contract.urlGetAspirasiById;
+    private final String URL_DELETE_ASPIRASI = Db_Contract.urlDeleteAspirasi;
 
     public HistoryFragment() {}
 
@@ -44,7 +48,6 @@ public class HistoryFragment extends Fragment {
 
         aspirasiList = new ArrayList<>();
 
-        // isPublicView = false, isEditable = true supaya tombol Edit & Delete muncul
         adapter = new AspirasiAdapter(aspirasiList, false, true);
 
         adapter.setOnItemClickListener(new AspirasiAdapter.OnItemClickListener() {
@@ -63,10 +66,7 @@ public class HistoryFragment extends Fragment {
                         .setTitle("Hapus Aspirasi")
                         .setMessage("Yakin ingin menghapus aspirasi ini?")
                         .setPositiveButton("Hapus", (dialog, which) -> {
-                            // TODO: Panggil API hapus aspirasi dulu jika perlu
-                            aspirasiList.remove(position);
-                            adapter.notifyItemRemoved(position);
-                            Toast.makeText(getContext(), "Aspirasi dihapus", Toast.LENGTH_SHORT).show();
+                            hapusAspirasi(aspirasi, position);
                         })
                         .setNegativeButton("Batal", null)
                         .show();
@@ -100,13 +100,14 @@ public class HistoryFragment extends Fragment {
 
                             for (int i = 0; i < dataArray.length(); i++) {
                                 JSONObject obj = dataArray.getJSONObject(i);
+                                int aspirationId = obj.optInt("aspiration_id", 0);
                                 String title = obj.optString("title", "Judul tidak ada");
                                 String content = obj.optString("content", "Isi tidak tersedia");
                                 String createdAt = obj.optString("created_at", "-");
                                 String username = obj.optString("username", "Anonim");
                                 boolean isAnonymous = obj.optBoolean("is_anonymous", false);
 
-                                aspirasiList.add(new Aspirasi(title, content, createdAt, username, isAnonymous));
+                                aspirasiList.add(new Aspirasi(aspirationId, title, content, createdAt, username, isAnonymous));
                             }
 
                             adapter.notifyDataSetChanged();
@@ -124,5 +125,49 @@ public class HistoryFragment extends Fragment {
                 });
 
         Volley.newRequestQueue(requireContext()).add(jsonObjectRequest);
+    }
+
+    private void hapusAspirasi(Aspirasi aspirasi, int position) {
+        SharedPreferences prefs = requireContext().getSharedPreferences("user_prefs", getContext().MODE_PRIVATE);
+        int userId = prefs.getInt("user_id", 0);
+
+        if (userId == 0) {
+            Toast.makeText(getContext(), "Silakan login terlebih dahulu", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int aspirationId = aspirasi.getAspirationId();
+
+        StringRequest deleteRequest = new StringRequest(Request.Method.POST, URL_DELETE_ASPIRASI,
+                response -> {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String status = jsonObject.optString("status");
+                        String message = jsonObject.optString("message");
+
+                        if ("success".equalsIgnoreCase(status)) {
+                            aspirasiList.remove(position);
+                            adapter.notifyItemRemoved(position);
+                            Toast.makeText(getContext(), "Aspirasi berhasil dihapus", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Gagal hapus aspirasi: " + message, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        Toast.makeText(getContext(), "Response error", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                error -> {
+                    Toast.makeText(getContext(), "Error koneksi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("aspiration_id", String.valueOf(aspirationId));
+                params.put("user_id", String.valueOf(userId));
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(requireContext()).add(deleteRequest);
     }
 }
