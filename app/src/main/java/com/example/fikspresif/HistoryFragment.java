@@ -98,10 +98,10 @@ public class HistoryFragment extends Fragment {
 
         // Buat AlertDialog dengan title dan button yang diatur di Java
         AlertDialog dialog = new AlertDialog.Builder(requireContext())
-                .setTitle("Edit Aspirasi")
+                .setTitle("Update Aspiration")
                 .setView(dialogView)
                 .setPositiveButton("Update", null) // Set null dulu, akan di-override nanti
-                .setNegativeButton("Batal", (d, which) -> d.dismiss())
+                .setNegativeButton("Cancel", (d, which) -> d.dismiss())
                 .create();
 
         dialog.show();

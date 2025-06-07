@@ -18,7 +18,7 @@
                 android:id="@+id/etJudulEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Judul"
+                android:hint="New Title"
                 android:inputType="textCapSentences"
                 android:maxLines="2"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -32,7 +32,7 @@
                 android:id="@+id/etIsiEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Isi Aspirasi"
+                android:hint="New Massage"
                 android:inputType="textMultiLine|textCapSentences"
                 android:minLines="4"
                 android:maxLines="6"
@@ -43,7 +43,7 @@
             android:id="@+id/cbAnonimusEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Kirim sebagai Anonim"
+            android:text="Submit as Anonymous"
             android:textSize="16sp"
             android:layout_marginBottom="16dp" />
 

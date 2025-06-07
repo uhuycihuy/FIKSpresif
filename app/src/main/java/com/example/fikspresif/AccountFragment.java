@@ -85,10 +85,10 @@ public class AccountFragment extends Fragment {
         etEmail.setText(tvEmail.getText().toString());
 
         AlertDialog dialog = new AlertDialog.Builder(requireContext())
-                .setTitle("Edit Profile")
+                .setTitle("Update Profile")
                 .setView(dialogView)
                 .setPositiveButton("Update", null)
-                .setNegativeButton("Batal", (d, which) -> d.dismiss())
+                .setNegativeButton("Cancel", (d, which) -> d.dismiss())
                 .create();
 
         dialog.show();
