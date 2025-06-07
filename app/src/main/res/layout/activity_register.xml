@@ -4,71 +4,182 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="25dp"
+    android:background="@drawable/gradient_background"
     tools:context=".RegisterActivity">
 
+    <!-- Title -->
     <TextView
-        android:id="@+id/tvPleaseCreateAccount"
+        android:id="@+id/tvRegisterTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:text="Make Your Account"
-        android:textSize="24sp"/>
+        android:layout_marginTop="90dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="Create Your\nAccount"
+        android:textColor="@android:color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:lineSpacingExtra="8dp"
+        android:fontFamily="sans-serif-medium" />
 
-    <EditText
-        android:id="@+id/etRegisterUsername"
+    <!-- Form Card -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvPleaseCreateAccount"
-        android:layout_marginTop="25dp"
-        android:hint="Username"
-        android:drawableStart="@drawable/baseline_person_24"
-        android:drawablePadding="24dp"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tvRegisterTitle"
+        android:background="@drawable/card_background"
+        android:orientation="vertical"
+        android:padding="32dp"
+        android:elevation="8dp">
 
-    <EditText
-        android:id="@+id/etRegisterName"
-        android:layout_below="@+id/etRegisterUsername"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:hint="Your Full Name"
-        android:drawableStart="@drawable/baseline_account_box_24"
-        android:drawablePadding="24dp"/>
+        <!-- Username -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/input_background"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical">
 
-    <EditText
-        android:id="@+id/etRegisterEmail"
-        android:layout_below="@+id/etRegisterName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:hint="Email Address"
-        android:inputType="textEmailAddress"
-        android:drawableStart="@drawable/baseline_email_24"
-        android:drawablePadding="24dp"/>
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/baseline_person_24"
+                android:tint="#CCCCCC" />
 
-    <EditText
-        android:id="@+id/etRegisterPassword"
-        android:layout_below="@+id/etRegisterEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:drawableStart="@drawable/baseline_lock_24"
-        android:drawablePadding="24dp"/>
+            <EditText
+                android:id="@+id/etRegisterUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Username"
+                android:textColorHint="#CCCCCC"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:background="@android:color/transparent"
+                android:fontFamily="sans-serif" />
+        </LinearLayout>
 
-    <Button
-        android:id="@+id/btnRegister"
-        android:layout_below="@+id/etRegisterPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Register"/>
+        <!-- Full Name -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/input_background"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/tvCreateAccount"
-        android:layout_below="@+id/btnRegister"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Already Have Account? Login Here"
-        android:textAlignment="center"/>
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/baseline_account_box_24"
+                android:tint="#CCCCCC" />
+
+            <EditText
+                android:id="@+id/etRegisterName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Full Name"
+                android:textColorHint="#CCCCCC"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:background="@android:color/transparent"
+                android:fontFamily="sans-serif" />
+        </LinearLayout>
+
+        <!-- Email -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/input_background"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/baseline_email_24"
+                android:tint="#CCCCCC" />
+
+            <EditText
+                android:id="@+id/etRegisterEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:textColorHint="#CCCCCC"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:background="@android:color/transparent"
+                android:fontFamily="sans-serif" />
+        </LinearLayout>
+
+        <!-- Password -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/input_background"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/baseline_lock_24"
+                android:tint="#CCCCCC" />
+
+            <EditText
+                android:id="@+id/etRegisterPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:textColorHint="#CCCCCC"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:background="@android:color/transparent"
+                android:fontFamily="sans-serif" />
+        </LinearLayout>
+
+        <!-- Register Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/button_background"
+            android:text="Register"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:fontFamily="sans-serif-medium"
+            android:elevation="4dp"
+            android:stateListAnimator="@null" />
+
+        <!-- Already have account -->
+        <TextView
+            android:id="@+id/tvLoginLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Already Have Account? Login Here"
+            android:textAlignment="center"
+            android:textColor="#537D5D"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif"
+            android:padding="5dp" />
+
+    </LinearLayout>
+
 </RelativeLayout>

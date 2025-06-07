@@ -46,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.etRegisterEmail);
         etPassword = findViewById(R.id.etRegisterPassword);
         btnRegister = findViewById(R.id.btnRegister);
-        tvLoginLink = findViewById(R.id.tvCreateAccount);
+        tvLoginLink = findViewById(R.id.tvLoginLink);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Sedang mendaftar...");
