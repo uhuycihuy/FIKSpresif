@@ -1,11 +1,12 @@
 package com.example.fikspresif;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.button.MaterialButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +33,9 @@ public class MainFragment extends Fragment {
     private final String URL_GET_ASPIRASI = Db_Contract.urlGetAllAspirasi;
     private String order = "desc";
 
+    private MaterialButton btnTerbaru, btnTerlama;
+    private MaterialButton currentSelectedButton;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,22 +48,55 @@ public class MainFragment extends Fragment {
         adapter = new AspirasiAdapter(aspirasiList, true, false); // public view, no edit/delete
         recyclerView.setAdapter(adapter);
 
-        Button btnTerbaru = view.findViewById(R.id.btnTerbaru);
-        Button btnTerlama = view.findViewById(R.id.btnTerlama);
+        // Initialize buttons
+        btnTerbaru = view.findViewById(R.id.btnTerbaru);
+        btnTerlama = view.findViewById(R.id.btnTerlama);
+
+        setupButtons();
+        loadAspirasi();
+
+        return view;
+    }
+
+    private void setupButtons() {
+        // Set button Recent sebagai default selected
+        selectButton(btnTerbaru);
 
         btnTerbaru.setOnClickListener(v -> {
+            selectButton(btnTerbaru);
             order = "desc";
             loadAspirasi();
         });
 
         btnTerlama.setOnClickListener(v -> {
+            selectButton(btnTerlama);
             order = "asc";
             loadAspirasi();
         });
+    }
 
-        loadAspirasi();
+    private void selectButton(MaterialButton selectedButton) {
+        // Reset semua button ke state default
+        resetAllButtons();
 
-        return view;
+        // Set button yang dipilih
+        selectedButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ABAAAA")));
+        selectedButton.setTextColor(Color.parseColor("#FFFFFF"));
+        selectedButton.setSelected(true);
+
+        currentSelectedButton = selectedButton;
+    }
+
+    private void resetAllButtons() {
+        // Reset button Recent
+        btnTerbaru.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFFFFF")));
+        btnTerbaru.setTextColor(Color.parseColor("#DEDEDE"));
+        btnTerbaru.setSelected(false);
+
+        // Reset button Distant
+        btnTerlama.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFFFFF")));
+        btnTerlama.setTextColor(Color.parseColor("#DEDEDE"));
+        btnTerlama.setSelected(false);
     }
 
     private void loadAspirasi() {

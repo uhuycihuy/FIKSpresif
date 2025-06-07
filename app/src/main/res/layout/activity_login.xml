@@ -7,7 +7,6 @@
     android:background="@drawable/gradient_background"
     tools:context=".LoginActivity">
 
-    <!-- Title Section -->
     <TextView
         android:id="@+id/tvLoginTitle"
         android:layout_width="match_parent"
@@ -23,7 +22,6 @@
         android:lineSpacingExtra="8dp"
         android:fontFamily="sans-serif-medium" />
 
-    <!-- Input Card Container - Full Width & Height -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,7 +31,6 @@
         android:padding="32dp"
         android:elevation="8dp">
 
-        <!-- Username Input Container -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,7 +61,6 @@
 
         </LinearLayout>
 
-        <!-- Password Input Container -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -95,7 +91,6 @@
 
         </LinearLayout>
 
-        <!-- Login Button -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
@@ -111,7 +106,6 @@
             android:elevation="4dp"
             android:stateListAnimator="@null" />
 
-        <!-- Create Account Link -->
         <TextView
             android:id="@+id/tvCreateAccount"
             android:layout_width="match_parent"
