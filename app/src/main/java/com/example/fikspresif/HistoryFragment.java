@@ -96,8 +96,8 @@ public class HistoryFragment extends Fragment {
         etIsiEdit.setText(aspirasi.getContent());
         cbAnonimusEdit.setChecked(aspirasi.isAnonymous());
 
-        // Buat AlertDialog dengan title dan button yang diatur di Java
-        AlertDialog dialog = new AlertDialog.Builder(requireContext())
+        // Buat AlertDialog dengan custom theme
+        AlertDialog dialog = new AlertDialog.Builder(requireContext(), R.style.CustomDialogTheme)
                 .setTitle("Update Aspiration")
                 .setView(dialogView)
                 .setPositiveButton("Update", null) // Set null dulu, akan di-override nanti
@@ -105,6 +105,10 @@ public class HistoryFragment extends Fragment {
                 .create();
 
         dialog.show();
+
+        // Set dialog width agar tidak terlalu lebar
+        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.85);
+        dialog.getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         // Override positive button untuk validasi custom
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {

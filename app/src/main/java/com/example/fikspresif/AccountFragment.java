@@ -105,7 +105,8 @@ public class AccountFragment extends Fragment {
         etFullName.setText(tvName.getText().toString());
         etEmail.setText(tvEmail.getText().toString());
 
-        AlertDialog dialog = new AlertDialog.Builder(requireContext())
+        // Menggunakan custom theme untuk dialog
+        AlertDialog dialog = new AlertDialog.Builder(requireContext(), R.style.CustomDialogTheme)
                 .setTitle("Update Profile")
                 .setView(dialogView)
                 .setPositiveButton("Update", null)
@@ -113,6 +114,10 @@ public class AccountFragment extends Fragment {
                 .create();
 
         dialog.show();
+
+        // Set dialog width agar tidak terlalu lebar
+        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.85);
+        dialog.getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             String username = etUsername.getText().toString().trim();
