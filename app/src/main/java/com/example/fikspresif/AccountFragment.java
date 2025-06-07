@@ -63,7 +63,6 @@ public class AccountFragment extends Fragment {
         if (userId != 0) {
             new FetchAccountTask(userId).execute();
         } else {
-            // Load data from SharedPreferences if available
             loadDataFromPrefs();
         }
 
@@ -79,7 +78,6 @@ public class AccountFragment extends Fragment {
         String fullName = prefs.getString("full_name", "Full Name");
         String email = prefs.getString("email", "email@example.com");
 
-        // Set username with complete "What's Up, Username!" format
         tvUsername.setText("What's Up, " + username + "!");
         tvName.setText(fullName);
         tvEmail.setText(email);
@@ -95,7 +93,6 @@ public class AccountFragment extends Fragment {
         TextInputEditText etPasswordLama = dialogView.findViewById(R.id.etPasswordLama);
         TextInputEditText etPasswordBaru = dialogView.findViewById(R.id.etPasswordBaru);
 
-        // Get current username without "What's Up, " and "!" for editing
         String currentUsername = tvUsername.getText().toString();
         if (currentUsername.startsWith("What's Up, ") && currentUsername.endsWith("!")) {
             currentUsername = currentUsername.substring(11, currentUsername.length() - 1);
@@ -105,7 +102,6 @@ public class AccountFragment extends Fragment {
         etFullName.setText(tvName.getText().toString());
         etEmail.setText(tvEmail.getText().toString());
 
-        // Menggunakan custom theme untuk dialog
         AlertDialog dialog = new AlertDialog.Builder(requireContext(), R.style.CustomDialogTheme)
                 .setTitle("Update Profile")
                 .setView(dialogView)
@@ -115,7 +111,6 @@ public class AccountFragment extends Fragment {
 
         dialog.show();
 
-        // Set dialog width agar tidak terlalu lebar
         int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.85);
         dialog.getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -225,12 +220,10 @@ public class AccountFragment extends Fragment {
                 String name = result.optString("name");
                 String email = result.optString("email");
 
-                // Set username with complete "What's Up, Username!" format
                 tvUsername.setText("What's Up, " + username + "!");
                 tvName.setText(name);
                 tvEmail.setText(email);
 
-                // Save to SharedPreferences for future use
                 SharedPreferences prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putString("username", username);

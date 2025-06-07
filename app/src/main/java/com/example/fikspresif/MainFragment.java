@@ -48,7 +48,6 @@ public class MainFragment extends Fragment {
         adapter = new AspirasiAdapter(aspirasiList, true, false); // public view, no edit/delete
         recyclerView.setAdapter(adapter);
 
-        // Initialize buttons
         btnTerbaru = view.findViewById(R.id.btnTerbaru);
         btnTerlama = view.findViewById(R.id.btnTerlama);
 
@@ -59,7 +58,6 @@ public class MainFragment extends Fragment {
     }
 
     private void setupButtons() {
-        // Set button Recent sebagai default selected
         selectButton(btnTerbaru);
 
         btnTerbaru.setOnClickListener(v -> {
@@ -76,10 +74,8 @@ public class MainFragment extends Fragment {
     }
 
     private void selectButton(MaterialButton selectedButton) {
-        // Reset semua button ke state default
         resetAllButtons();
 
-        // Set button yang dipilih
         selectedButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ABAAAA")));
         selectedButton.setTextColor(Color.parseColor("#FFFFFF"));
         selectedButton.setSelected(true);
@@ -88,12 +84,10 @@ public class MainFragment extends Fragment {
     }
 
     private void resetAllButtons() {
-        // Reset button Recent
         btnTerbaru.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFFFFF")));
         btnTerbaru.setTextColor(Color.parseColor("#DEDEDE"));
         btnTerbaru.setSelected(false);
 
-        // Reset button Distant
         btnTerlama.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFFFFF")));
         btnTerlama.setTextColor(Color.parseColor("#DEDEDE"));
         btnTerlama.setSelected(false);

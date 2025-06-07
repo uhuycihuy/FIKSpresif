@@ -86,17 +86,14 @@ public class HistoryFragment extends Fragment {
         LayoutInflater inflater = LayoutInflater.from(requireContext());
         View dialogView = inflater.inflate(R.layout.dialog_edit_aspirasi, null);
 
-        // Inisialisasi komponen
         TextInputEditText etJudulEdit = dialogView.findViewById(R.id.etJudulEdit);
         TextInputEditText etIsiEdit = dialogView.findViewById(R.id.etIsiEdit);
         CheckBox cbAnonimusEdit = dialogView.findViewById(R.id.cbAnonimusEdit);
 
-        // Set data existing
         etJudulEdit.setText(aspirasi.getTitle());
         etIsiEdit.setText(aspirasi.getContent());
         cbAnonimusEdit.setChecked(aspirasi.isAnonymous());
 
-        // Buat AlertDialog dengan custom theme
         AlertDialog dialog = new AlertDialog.Builder(requireContext(), R.style.CustomDialogTheme)
                 .setTitle("Update Aspiration")
                 .setView(dialogView)
@@ -106,17 +103,14 @@ public class HistoryFragment extends Fragment {
 
         dialog.show();
 
-        // Set dialog width agar tidak terlalu lebar
         int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.85);
         dialog.getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        // Override positive button untuk validasi custom
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             String judul = etJudulEdit.getText().toString().trim();
             String isi = etIsiEdit.getText().toString().trim();
             boolean isAnonim = cbAnonimusEdit.isChecked();
 
-            // Validasi input
             if (validateEditInput(judul, isi, etJudulEdit, etIsiEdit)) {
                 editAspirasi(aspirasi.getAspirationId(), judul, isi, isAnonim, position, dialog);
             }

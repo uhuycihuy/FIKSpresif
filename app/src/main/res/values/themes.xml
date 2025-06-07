@@ -1,13 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.FIKSpresif" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:statusBarColor">#41644A</item>
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
     <style name="Theme.FIKSpresif" parent="Base.Theme.FIKSpresif" />
 
-    <!-- Tambahkan style dialog di sini -->
     <style name="CustomDialogTheme" parent="Theme.Material3.DayNight.Dialog.Alert">
         <item name="android:windowBackground">@drawable/dialog_background</item>
         <item name="android:backgroundDimAmount">0.8</item>

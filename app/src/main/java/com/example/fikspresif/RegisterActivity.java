@@ -135,7 +135,7 @@ public class RegisterActivity extends AppCompatActivity {
         // Normalisasi response dengan menghapus whitespace dan convert ke lowercase
         String normalizedResponse = response.trim().toLowerCase();
 
-        if (normalizedResponse.contains("berhasil")) {  // Menangkap berbagai varian "berhasil"
+        if (normalizedResponse.contains("berhasil")) {
             Toast.makeText(this, "Pendaftaran berhasil! Silakan login.", Toast.LENGTH_SHORT).show();
             navigateToLogin();
         } else if (normalizedResponse.contains("username")) {
@@ -145,14 +145,12 @@ public class RegisterActivity extends AppCompatActivity {
             etEmail.setError("Email sudah digunakan");
             etEmail.requestFocus();
         } else {
-            // Tampilkan pesan umum untuk error lainnya
             Toast.makeText(this, "Proses pendaftaran gagal", Toast.LENGTH_SHORT).show();
             Log.e("REGISTER_ERROR", "Server response: " + response); // Log untuk developer
         }
     }
 
     private void handleRegistrationError(VolleyError error) {
-        // Hanya tampilkan pesan umum ke user
         Toast.makeText(this, "Gagal terhubung ke server", Toast.LENGTH_SHORT).show();
 
         // Log detail error untuk debugging developer

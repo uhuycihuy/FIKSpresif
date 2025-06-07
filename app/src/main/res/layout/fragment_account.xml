@@ -22,106 +22,129 @@
         android:textSize="35sp"
         android:textStyle="bold" />
 
+    <!-- Card Container with scroll capability -->
     <LinearLayout
+        android:id="@+id/cardContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tvAccountUsername"
         android:background="@drawable/card_background"
         android:orientation="vertical"
-        android:padding="32dp"
+        android:padding="16dp"
+        android:clipChildren="true"
+        android:clipToPadding="true"
         android:elevation="8dp">
 
-        <!-- Profile Picture Section -->
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="16dp"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            android:fillViewport="true"
+            android:overScrollMode="never"
+            android:scrollbars="none">
 
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_marginBottom="16dp"
-                android:src="@drawable/baseline_account_circle_24" />
-
-            <TextView
-                android:id="@+id/tvAccountName"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nama"
-                android:textColor="#537D5D"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-medium"
-                android:layout_marginBottom="8dp" />
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:clipChildren="true"
+                android:clipToPadding="true">
 
-            <TextView
-                android:id="@+id/tvAccountEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="email@contoh.com"
-                android:textColor="#999999"
-                android:textSize="16sp"
-                android:fontFamily="sans-serif" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
 
-        </LinearLayout>
+                    <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_marginBottom="16dp"
+                        android:src="@drawable/baseline_account_circle_24" />
 
-        <!-- Settings Title -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Settings"
-            android:textColor="#537D5D"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:fontFamily="sans-serif-medium"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="12dp" />
+                    <TextView
+                        android:id="@+id/tvAccountName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nama"
+                        android:textColor="#537D5D"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginBottom="8dp" />
 
-        <!-- Edit Profile Button -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnEditUser"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/input_background"
-            android:text="Edit Profile"
-            android:textColor="#999999"
-            android:textSize="16sp"
-            android:textAlignment="textStart"
-            android:textAllCaps="false"
-            android:fontFamily="sans-serif"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:gravity="center_vertical|start"
-            android:drawableEnd="@drawable/baseline_navigate_next_24"
-            android:drawableTint="#999999"
-            android:elevation="2dp"
-            android:stateListAnimator="@null" />
+                    <TextView
+                        android:id="@+id/tvAccountEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email"
+                        android:textColor="#999999"
+                        android:textSize="16sp"
+                        android:fontFamily="sans-serif" />
 
-        <!-- Logout Button -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnLogout"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/input_background"
-            android:text="Logout"
-            android:textColor="#999999"
-            android:textSize="16sp"
-            android:textAlignment="textStart"
-            android:textAllCaps="false"
-            android:fontFamily="sans-serif"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:gravity="center_vertical|start"
-            android:drawableEnd="@drawable/baseline_navigate_next_24"
-            android:drawableTint="#999999"
-            android:elevation="2dp"
-            android:stateListAnimator="@null" />
+                </LinearLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Settings"
+                    android:textColor="#537D5D"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="15dp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnEditUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/input_background"
+                    android:text="Edit Profile"
+                    android:textColor="#999999"
+                    android:textSize="16sp"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="false"
+                    android:fontFamily="sans-serif"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:gravity="center_vertical|start"
+                    android:drawableEnd="@drawable/baseline_navigate_next_24"
+                    android:drawableTint="#999999"
+                    android:elevation="2dp"
+                    android:stateListAnimator="@null" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnLogout"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/input_background"
+                    android:text="Logout"
+                    android:textColor="#999999"
+                    android:textSize="16sp"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="false"
+                    android:fontFamily="sans-serif"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:gravity="center_vertical|start"
+                    android:drawableEnd="@drawable/baseline_navigate_next_24"
+                    android:drawableTint="#999999"
+                    android:elevation="2dp"
+                    android:stateListAnimator="@null" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp" />
+
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
 </RelativeLayout>

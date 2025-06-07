@@ -23,100 +23,127 @@
         android:fontFamily="sans-serif-medium" />
 
     <LinearLayout
+        android:id="@+id/cardContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tvLoginTitle"
         android:background="@drawable/card_background"
         android:orientation="vertical"
-        android:padding="32dp"
+        android:padding="16dp"
+        android:clipChildren="true"
+        android:clipToPadding="true"
         android:elevation="8dp">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/input_background"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:gravity="center_vertical">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            android:fillViewport="true"
+            android:overScrollMode="never"
+            android:scrollbars="none">
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/baseline_person_24"
-                android:tint="#CCCCCC" />
-
-            <EditText
-                android:id="@+id/etUsername"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Username"
-                android:textColorHint="#CCCCCC"
-                android:textColor="#333333"
-                android:textSize="16sp"
-                android:background="@android:color/transparent"
-                android:fontFamily="sans-serif" />
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:clipChildren="true"
+                android:clipToPadding="true">
 
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/input_background"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:background="@drawable/input_background"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:gravity="center_vertical">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/baseline_person_24"
+                        android:tint="#CCCCCC" />
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/baseline_lock_24"
-                android:tint="#CCCCCC" />
+                    <EditText
+                        android:id="@+id/etUsername"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Username"
+                        android:textColorHint="#CCCCCC"
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="sans-serif"
+                        android:maxLines="1"
+                        android:inputType="text" />
 
-            <EditText
-                android:id="@+id/etPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Password"
-                android:textColorHint="#CCCCCC"
-                android:textColor="#333333"
-                android:textSize="16sp"
-                android:inputType="textPassword"
-                android:background="@android:color/transparent"
-                android:fontFamily="sans-serif" />
+                </LinearLayout>
 
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="50dp"
+                    android:background="@drawable/input_background"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnLogin"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:layout_marginBottom="24dp"
-            android:background="@drawable/button_background"
-            android:text="Login"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textAllCaps="false"
-            android:fontFamily="sans-serif-medium"
-            android:elevation="4dp"
-            android:stateListAnimator="@null" />
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/baseline_lock_24"
+                        android:tint="#CCCCCC" />
 
-        <TextView
-            android:id="@+id/tvCreateAccount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Create New Account"
-            android:textAlignment="center"
-            android:textColor="#537D5D"
-            android:textSize="16sp"
-            android:fontFamily="sans-serif"
-            android:padding="8dp" />
+                    <EditText
+                        android:id="@+id/etPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Password"
+                        android:textColorHint="#CCCCCC"
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        android:inputType="textPassword"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="sans-serif"
+                        android:maxLines="1" />
 
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:layout_marginBottom="24dp"
+                    android:background="@drawable/button_background"
+                    android:text="Login"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="false"
+                    android:fontFamily="sans-serif-medium"
+                    android:elevation="4dp"
+                    android:stateListAnimator="@null" />
+
+                <TextView
+                    android:id="@+id/tvCreateAccount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Create New Account"
+                    android:textAlignment="center"
+                    android:textColor="#537D5D"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif"
+                    android:padding="8dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp" />
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
-
 </RelativeLayout>
