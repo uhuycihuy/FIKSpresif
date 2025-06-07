@@ -62,12 +62,27 @@ public class AccountFragment extends Fragment {
         userId = getUserIdFromPrefs();
         if (userId != 0) {
             new FetchAccountTask(userId).execute();
+        } else {
+            // Load data from SharedPreferences if available
+            loadDataFromPrefs();
         }
 
         btnLogout.setOnClickListener(v -> showLogoutConfirmationDialog());
         btnEditAkun.setOnClickListener(v -> showEditProfileDialog());
 
         return view;
+    }
+
+    private void loadDataFromPrefs() {
+        SharedPreferences prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        String username = prefs.getString("username", "User");
+        String fullName = prefs.getString("full_name", "Full Name");
+        String email = prefs.getString("email", "email@example.com");
+
+        // Set username with complete "What's Up, Username!" format
+        tvUsername.setText("What's Up, " + username + "!");
+        tvName.setText(fullName);
+        tvEmail.setText(email);
     }
 
     private void showEditProfileDialog() {
@@ -80,7 +95,13 @@ public class AccountFragment extends Fragment {
         TextInputEditText etPasswordLama = dialogView.findViewById(R.id.etPasswordLama);
         TextInputEditText etPasswordBaru = dialogView.findViewById(R.id.etPasswordBaru);
 
-        etUsername.setText(tvUsername.getText().toString());
+        // Get current username without "What's Up, " and "!" for editing
+        String currentUsername = tvUsername.getText().toString();
+        if (currentUsername.startsWith("What's Up, ") && currentUsername.endsWith("!")) {
+            currentUsername = currentUsername.substring(11, currentUsername.length() - 1);
+        }
+
+        etUsername.setText(currentUsername);
         etFullName.setText(tvName.getText().toString());
         etEmail.setText(tvEmail.getText().toString());
 
@@ -195,9 +216,22 @@ public class AccountFragment extends Fragment {
         @Override
         protected void onPostExecute(JSONObject result) {
             if (result != null && !result.has("error")) {
-                tvUsername.setText(result.optString("username"));
-                tvName.setText(result.optString("name"));
-                tvEmail.setText(result.optString("email"));
+                String username = result.optString("username");
+                String name = result.optString("name");
+                String email = result.optString("email");
+
+                // Set username with complete "What's Up, Username!" format
+                tvUsername.setText("What's Up, " + username + "!");
+                tvName.setText(name);
+                tvEmail.setText(email);
+
+                // Save to SharedPreferences for future use
+                SharedPreferences prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("username", username);
+                editor.putString("full_name", name);
+                editor.putString("email", email);
+                editor.apply();
             }
         }
     }
@@ -265,7 +299,7 @@ public class AccountFragment extends Fragment {
                 editor.putString("email", email);
                 editor.apply();
 
-                tvUsername.setText(username);
+                tvUsername.setText("What's Up, " + username + "!");
                 tvName.setText(fullName);
                 tvEmail.setText(email);
 
