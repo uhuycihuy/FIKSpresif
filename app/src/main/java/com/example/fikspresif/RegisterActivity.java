@@ -28,7 +28,6 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView tvLoginLink;
     private ProgressDialog progressDialog;
 
-    // Pola untuk validasi username (hanya huruf, angka, underscore)
     private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_]{3,20}$");
 
     @Override
@@ -132,7 +131,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void handleRegistrationResponse(String response) {
-        // Normalisasi response dengan menghapus whitespace dan convert ke lowercase
         String normalizedResponse = response.trim().toLowerCase();
 
         if (normalizedResponse.contains("berhasil")) {
@@ -153,7 +151,6 @@ public class RegisterActivity extends AppCompatActivity {
     private void handleRegistrationError(VolleyError error) {
         Toast.makeText(this, "Gagal terhubung ke server", Toast.LENGTH_SHORT).show();
 
-        // Log detail error untuk debugging developer
         Log.e("REGISTER_ERROR", "Network error: " + error.toString());
         if (error.networkResponse != null) {
             Log.e("REGISTER_ERROR", "Status code: " + error.networkResponse.statusCode);

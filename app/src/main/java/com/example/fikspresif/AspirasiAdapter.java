@@ -113,18 +113,18 @@ public class AspirasiAdapter extends RecyclerView.Adapter<AspirasiAdapter.ViewHo
                 tvContent.setMaxLines(3);
                 tvContent.setEllipsize(TextUtils.TruncateAt.END);
                 isExpanded = false;
-                tvSelengkapnya.setText("View More");
+                tvSelengkapnya.setText("Read More");
 
                 tvSelengkapnya.setOnClickListener(v -> {
                     isExpanded = !isExpanded;
                     if (isExpanded) {
                         tvContent.setMaxLines(Integer.MAX_VALUE);
                         tvContent.setEllipsize(null);
-                        tvSelengkapnya.setText("View Less");
+                        tvSelengkapnya.setText("Read Less");
                     } else {
                         tvContent.setMaxLines(3);
                         tvContent.setEllipsize(TextUtils.TruncateAt.END);
-                        tvSelengkapnya.setText("View More");
+                        tvSelengkapnya.setText("Read More");
                     }
                 });
             } else {

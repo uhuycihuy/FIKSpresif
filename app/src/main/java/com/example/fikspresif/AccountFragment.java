@@ -158,10 +158,10 @@ public class AccountFragment extends Fragment {
 
     private void showLogoutConfirmationDialog() {
         new AlertDialog.Builder(requireContext())
-                .setTitle("Konfirmasi Logout")
-                .setMessage("Apakah Anda yakin ingin logout?")
-                .setPositiveButton("Ya", (dialog, which) -> performLogout())
-                .setNegativeButton("Tidak", (dialog, which) -> dialog.dismiss())
+                .setTitle("Logout")
+                .setMessage("Are you sure you want to logout? ")
+                .setPositiveButton("Yes", (dialog, which) -> performLogout())
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
                 .show();
     }
 

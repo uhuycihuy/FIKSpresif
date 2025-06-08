@@ -67,12 +67,12 @@ public class HistoryFragment extends Fragment {
                 Aspirasi aspirasi = aspirasiList.get(position);
 
                 new AlertDialog.Builder(requireContext())
-                        .setTitle("Hapus Aspirasi")
-                        .setMessage("Yakin ingin menghapus aspirasi ini?")
-                        .setPositiveButton("Hapus", (dialog, which) -> {
+                        .setTitle("Delete Aspiration")
+                        .setMessage("Are you sure you want to delete this aspiration?")
+                        .setPositiveButton("Delete", (dialog, which) -> {
                             hapusAspirasi(aspirasi, position);
                         })
-                        .setNegativeButton("Batal", null)
+                        .setNegativeButton("Cancel", null)
                         .show();
             }
         });
@@ -99,7 +99,7 @@ public class HistoryFragment extends Fragment {
         AlertDialog dialog = new AlertDialog.Builder(requireContext(), R.style.CustomDialogTheme)
                 .setTitle("Update Aspiration")
                 .setView(dialogView)
-                .setPositiveButton("Update", null) // Set null dulu, akan di-override nanti
+                .setPositiveButton("Update", null)
                 .setNegativeButton("Cancel", (d, which) -> d.dismiss())
                 .create();
 
@@ -274,6 +274,12 @@ public class HistoryFragment extends Fragment {
                         if ("success".equalsIgnoreCase(status)) {
                             aspirasiList.remove(position);
                             adapter.notifyItemRemoved(position);
+
+                            if (aspirasiList.isEmpty()) {
+                                tvEmpty.setVisibility(View.VISIBLE);
+                                recyclerView.setVisibility(View.GONE);
+                            }
+
                             Toast.makeText(getContext(), "Aspirasi berhasil dihapus", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getContext(), "Gagal hapus aspirasi: " + message, Toast.LENGTH_SHORT).show();
