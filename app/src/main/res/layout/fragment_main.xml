@@ -57,10 +57,22 @@
             app:strokeWidth="0dp" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tvEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No Aspirations Yet"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="#DEDEDE"
+        android:textStyle="italic"
+        android:layout_marginTop="16dp"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvAspirasiMain"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
 </LinearLayout>

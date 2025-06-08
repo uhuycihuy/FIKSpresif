@@ -17,6 +17,18 @@
         android:layout_marginBottom="30dp"
         android:layout_marginTop="25dp" />
 
+    <TextView
+        android:id="@+id/tvEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="You Haven't Submit Any Aspiration"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="#DEDEDE"
+        android:textStyle="italic"
+        android:layout_marginTop="16dp"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvAspirasi"
         android:layout_width="match_parent"

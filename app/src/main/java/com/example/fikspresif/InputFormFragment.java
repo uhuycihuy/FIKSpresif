@@ -79,6 +79,10 @@ public class InputFormFragment extends Fragment {
             return;
         }
 
+        if (title.length() > 28) {
+            Toast.makeText(getContext(), "Judul tidak boleh lebih dari 28 karakter", Toast.LENGTH_SHORT).show();
+            return;
+        }
         progressDialog.show();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_ADD_ASPIRASI,

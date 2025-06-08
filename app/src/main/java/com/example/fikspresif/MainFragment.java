@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 public class MainFragment extends Fragment {
 
     private RecyclerView recyclerView;
+    private TextView tvEmpty;
     private AspirasiAdapter adapter;
     private ArrayList<Aspirasi> aspirasiList;
     private final String URL_GET_ASPIRASI = Db_Contract.urlGetAllAspirasi;
@@ -47,6 +49,7 @@ public class MainFragment extends Fragment {
         aspirasiList = new ArrayList<>();
         adapter = new AspirasiAdapter(aspirasiList, true, false); // public view, no edit/delete
         recyclerView.setAdapter(adapter);
+        tvEmpty = view.findViewById(R.id.tvEmpty);
 
         btnTerbaru = view.findViewById(R.id.btnTerbaru);
         btnTerlama = view.findViewById(R.id.btnTerlama);
@@ -103,21 +106,28 @@ public class MainFragment extends Fragment {
                             JSONArray dataArray = response.getJSONArray("data");
                             aspirasiList.clear();
 
-                            for (int i = 0; i < dataArray.length(); i++) {
-                                JSONObject obj = dataArray.getJSONObject(i);
-                                int aspirationId = obj.optInt("aspiration_id", 0);
-                                String title = obj.optString("title", "Judul tidak ada");
-                                String content = obj.optString("content", "Isi tidak tersedia");
-                                String createdAt = obj.optString("created_at", "-");
+                            if (dataArray.length() == 0) {
+                                tvEmpty.setVisibility(View.VISIBLE);
+                                recyclerView.setVisibility(View.GONE);
+                            } else {
+                                tvEmpty.setVisibility(View.GONE);
+                                recyclerView.setVisibility(View.VISIBLE);
 
-                                boolean isAnonymous = obj.optBoolean("is_anonymous", false);
-                                String username = obj.optString("username", "Tidak diketahui");
-                                String displayUsername = isAnonymous ? "Anonim" : username;
+                                for (int i = 0; i < dataArray.length(); i++) {
+                                    JSONObject obj = dataArray.getJSONObject(i);
+                                    int aspirationId = obj.optInt("aspiration_id", 0);
+                                    String title = obj.optString("title", "Judul tidak ada");
+                                    String content = obj.optString("content", "Isi tidak tersedia");
+                                    String createdAt = obj.optString("created_at", "-");
 
-                                aspirasiList.add(new Aspirasi(aspirationId, title, content, createdAt, displayUsername, isAnonymous));
+                                    boolean isAnonymous = obj.optBoolean("is_anonymous", false);
+                                    String username = obj.optString("username", "Tidak diketahui");
+                                    String displayUsername = isAnonymous ? "Anonim" : username;
+
+                                    aspirasiList.add(new Aspirasi(aspirationId, title, content, createdAt, displayUsername, isAnonymous));
+                                }
+                                adapter.notifyDataSetChanged();
                             }
-
-                            adapter.notifyDataSetChanged();
                         } else {
                             Toast.makeText(getContext(), "Data tidak ditemukan", Toast.LENGTH_SHORT).show();
                         }
@@ -132,5 +142,9 @@ public class MainFragment extends Fragment {
                 });
 
         Volley.newRequestQueue(requireContext()).add(jsonObjectRequest);
+    }
+
+    public MaterialButton getCurrentSelectedButton() {
+        return currentSelectedButton;
     }
 }

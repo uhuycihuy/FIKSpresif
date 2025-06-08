@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,7 @@ public class HistoryFragment extends Fragment {
     private RecyclerView recyclerView;
     private AspirasiAdapter adapter;
     private ArrayList<Aspirasi> aspirasiList;
+    private TextView tvEmpty;
 
     private final String URL_GET_ASPIRASI = Db_Contract.urlGetAspirasiById;
     private final String URL_DELETE_ASPIRASI = Db_Contract.urlDeleteAspirasi;
@@ -48,7 +50,7 @@ public class HistoryFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.rvAspirasi);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
+        tvEmpty = view.findViewById(R.id.tvEmpty);
         aspirasiList = new ArrayList<>();
 
         adapter = new AspirasiAdapter(aspirasiList, false, true);
@@ -132,6 +134,11 @@ public class HistoryFragment extends Fragment {
             return false;
         }
 
+        if (judul.length() > 28) {
+            etJudul.setError("Judul tidak boleh lebih dari 28 karakter");
+            etJudul.requestFocus();
+            return false;
+        }
         return true;
     }
 
@@ -209,20 +216,27 @@ public class HistoryFragment extends Fragment {
                         if ("success".equalsIgnoreCase(response.optString("status"))) {
                             JSONArray dataArray = response.getJSONArray("data");
                             aspirasiList.clear();
+                            if (dataArray.length() == 0) {
+                                tvEmpty.setVisibility(View.VISIBLE);
+                                recyclerView.setVisibility(View.GONE);
+                            } else {
+                                tvEmpty.setVisibility(View.GONE);
+                                recyclerView.setVisibility(View.VISIBLE);
 
-                            for (int i = 0; i < dataArray.length(); i++) {
-                                JSONObject obj = dataArray.getJSONObject(i);
-                                int aspirationId = obj.optInt("aspiration_id", 0);
-                                String title = obj.optString("title", "Judul tidak ada");
-                                String content = obj.optString("content", "Isi tidak tersedia");
-                                String createdAt = obj.optString("created_at", "-");
-                                String username = obj.optString("username", "Anonim");
-                                boolean isAnonymous = obj.optBoolean("is_anonymous", false);
+                                for (int i = 0; i < dataArray.length(); i++) {
+                                    JSONObject obj = dataArray.getJSONObject(i);
+                                    int aspirationId = obj.optInt("aspiration_id", 0);
+                                    String title = obj.optString("title", "Judul tidak ada");
+                                    String content = obj.optString("content", "Isi tidak tersedia");
+                                    String createdAt = obj.optString("created_at", "-");
+                                    String username = obj.optString("username", "Anonim");
+                                    boolean isAnonymous = obj.optBoolean("is_anonymous", false);
 
-                                aspirasiList.add(new Aspirasi(aspirationId, title, content, createdAt, username, isAnonymous));
+                                    aspirasiList.add(new Aspirasi(aspirationId, title, content, createdAt, username, isAnonymous));
+                                }
+
+                                adapter.notifyDataSetChanged();
                             }
-
-                            adapter.notifyDataSetChanged();
                         } else {
                             Toast.makeText(getContext(), "Data tidak ditemukan", Toast.LENGTH_SHORT).show();
                         }

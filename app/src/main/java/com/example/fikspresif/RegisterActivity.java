@@ -146,7 +146,7 @@ public class RegisterActivity extends AppCompatActivity {
             etEmail.requestFocus();
         } else {
             Toast.makeText(this, "Proses pendaftaran gagal", Toast.LENGTH_SHORT).show();
-            Log.e("REGISTER_ERROR", "Server response: " + response); // Log untuk developer
+            Log.e("REGISTER_ERROR", "Server response: " + response);
         }
     }
 

@@ -110,7 +110,7 @@ public class AspirasiAdapter extends RecyclerView.Adapter<AspirasiAdapter.ViewHo
 
             if (aspirasi.getContent().length() > 150) {
                 tvSelengkapnya.setVisibility(View.VISIBLE);
-                tvContent.setMaxLines(4);
+                tvContent.setMaxLines(3);
                 tvContent.setEllipsize(TextUtils.TruncateAt.END);
                 isExpanded = false;
                 tvSelengkapnya.setText("View More");
@@ -122,7 +122,7 @@ public class AspirasiAdapter extends RecyclerView.Adapter<AspirasiAdapter.ViewHo
                         tvContent.setEllipsize(null);
                         tvSelengkapnya.setText("View Less");
                     } else {
-                        tvContent.setMaxLines(4);
+                        tvContent.setMaxLines(3);
                         tvContent.setEllipsize(TextUtils.TruncateAt.END);
                         tvSelengkapnya.setText("View More");
                     }
